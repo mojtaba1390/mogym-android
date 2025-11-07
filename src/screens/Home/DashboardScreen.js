@@ -68,7 +68,7 @@ export default function DashboardScreen({ navigation }) {
           {activePlan ? (
             <>
               <Text style={{ fontFamily:'Vazir-Regular', color:sub, marginBottom:10 }}>
-                {activePlan.PlanType} —  {activePlan.Title}
+                   {activePlan.Title} — {activePlan.PlanType}
               </Text>
               {/* <View style={{ flexDirection:'row', gap:12, marginBottom:12 }}>
                 <Badge icon="barbell" label={`${activePlan.currentWorkoutCount || 0}/${activePlan.totalWorkouts || 0} تمرین`} text={text} sub={sub} border={border} />

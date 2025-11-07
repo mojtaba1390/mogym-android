@@ -98,7 +98,7 @@ if (res.status === 200 && data.Jwt)
   {
   const token = data.Jwt;
 await AsyncStorage.setItem('token', token);  
-navigation.dispatch(StackActions.replace('Dashboard'));
+navigation.navigate('Main');
 }
 else{
         setError(data.Message);
