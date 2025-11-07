@@ -14,6 +14,8 @@ import ProfileScreen from './src/screens/Profile/ProfileScreen';
 import ContactUsScreen from './src/screens/Static/ContactUsScreen';
 import TermsScreen from './src/screens/Static/TermsScreen';
 import FaqScreen from './src/screens/Static/FaqScreen';
+import PlanWizard from './src/screens/Wizard/PlanWizard';
+
 // ... سایر اسکرین‌ها: Terms, Faq, ContactUs, ActivePlan, Payment ...
 
 const Stack = createNativeStackNavigator();
@@ -24,7 +26,7 @@ function MainTabs() {
     <Tabs.Navigator screenOptions={{ headerShown:false }}>
       <Tabs.Screen
         name="Dashboard"
-        component={DashboardScreen}
+        component={LandingScreen}
         options={{ title:'خانه', tabBarIcon:({color,size}) => <Ionicons name="home" color={color} size={size}/> }}
       />
       <Tabs.Screen
@@ -34,7 +36,7 @@ function MainTabs() {
       />
       <Tabs.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={DashboardScreen}
         options={{ title:'پروفایل', tabBarIcon:({color,size}) => <Ionicons name="person" color={color} size={size}/> }}
       />
     </Tabs.Navigator>
@@ -61,6 +63,8 @@ export default function App() {
     <Stack.Screen name="Terms" component={TermsScreen} />
     <Stack.Screen name="Faq" component={FaqScreen} />
     <Stack.Screen name="ContactUs" component={ContactUsScreen} />  
+    <Stack.Screen name="PlanWizard" component={PlanWizard} />
+ <Stack.Screen name="Dashboard" component={DashboardScreen} />
   </Stack.Navigator>
 </NavigationContainer>
   );

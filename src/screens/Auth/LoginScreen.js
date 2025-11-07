@@ -7,8 +7,9 @@ import { Ionicons } from '@expo/vector-icons'; // اگر نصب نیست: npx ex
 import { Animated, Easing } from 'react-native';
 import { StackActions } from '@react-navigation/native';
 
-//const API_URL = 'https://api.mogym.ir';
-const API_URL = 'https://localhost:7088';
+//const API_URL = 'https://api.mogym.ir'; // در صورت نیاز بعداً از env/app.json بخوان
+const API_URL = 'https://localhost:7088'; // در صورت نیاز بعداً از env/app.json بخوان
+
 
 
 export default function LoginScreen({ navigation }) {
@@ -73,8 +74,12 @@ const validateOtp = (value) => {
       const res = await fetch(`${API_URL}/api/auth/send-otp/${phone}`, {
         method:'POST'
       });
-      if (!res.ok) throw new Error(await res.text());
-      setOtpSent(true); setCount(120);
+      if (res.status === 200) {
+        setOtpSent(true);
+        setCountdown(120); // 2 min
+      } else {
+        setError(res.Message);
+      }
     } catch { setError('ارسال کد ناموفق بود'); }
     finally { setLoading(false); }
   };
@@ -93,11 +98,10 @@ if (res.status === 200 && data.Jwt)
   {
   const token = data.Jwt;
 await AsyncStorage.setItem('token', token);  
-navigation.dispatch(StackActions.replace('Main'));
+navigation.dispatch(StackActions.replace('Dashboard'));
 }
 else{
         setError(data.Message);
-
 }
   }
 catch { setError('کد وارد شده صحیح نیست'); }

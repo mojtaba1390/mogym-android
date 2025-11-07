@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Image, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
+import FeatureCarousel from '../../components/FeatureCarousel';
 
 const primary = '#7c3aed'; // بنفش (برای دکمه‌ها)
 const primaryHover = '#6d28d9';
@@ -12,6 +13,20 @@ const borderDark = '#273043';
 
 export default function LandingScreen({ navigation }) {
   const [dark, setDark] = useState(true);
+
+// داخل کامپوننت LandingScreen:
+const handleAuthPress = async () => {
+  try {
+    const t = await AsyncStorage.getItem('token');
+    if (t) {
+      navigation.navigate('Dashboard');   // داشبورد (تب‌ها)
+    } else {
+      navigation.navigate('Login');  // صفحه ورود
+    }
+  } catch (e) {
+    navigation.navigate('Login');
+  }
+};
 
   const handleFreePlanClick = async () => {
     const token = await AsyncStorage.getItem('token');
@@ -64,12 +79,13 @@ export default function LandingScreen({ navigation }) {
             {/* می‌تونی لوگو/تیتر بذاری */}
             {/* <Image source={require('../../../assets/logo.png')} style={{width:24,height:24}} /> */}
           </View>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Login')}
-            style={{ backgroundColor: primary, paddingHorizontal:16, paddingVertical:8, borderRadius:12 }}
-          >
-            <Text style={{ color:'#fff', fontFamily:'Vazir-Medium' }}>ورود / ثبت‌ نام</Text>
-          </TouchableOpacity>
+<TouchableOpacity
+  onPress={handleAuthPress}
+  style={{ backgroundColor: primary, paddingHorizontal:16, paddingVertical:8, borderRadius:12 }}
+>
+  <Text style={{ color:'#fff', fontFamily:'Vazir-Medium' }}>ورود / ثبت‌نام</Text>
+</TouchableOpacity>
+
         </View>
 
         {/* هیرو */}
@@ -95,11 +111,11 @@ export default function LandingScreen({ navigation }) {
             backgroundColor: dark ? cardDark : '#fff', borderRadius:16, borderWidth:1,
             borderColor: dark ? borderDark : '#e5e7eb', padding:16
           }}>
-            <Text style={{ fontFamily:'Vazir-Bold', color: dark ? '#fff' : '#0f172a', marginBottom:8 }}>
+            {/* <Text style={{ fontFamily:'Vazir-Bold', color: dark ? '#fff' : '#0f172a', marginBottom:8,textAlign:'right' }}>
               ویژگی‌ها
-            </Text>
+            </Text> */}
             <Text style={{ fontFamily:'Vazir-Regular', color: dark ? '#cbd5e1' : '#475569' }}>
-              (اینجا بعداً FeatureCarousel نیتیو می‌گذاریم)
+<FeatureCarousel dark={dark} />
             </Text>
           </View>
         </View>
@@ -111,10 +127,10 @@ export default function LandingScreen({ navigation }) {
             backgroundColor: dark ? cardDark : '#fff', borderRadius:16, borderWidth:1,
             borderColor: dark ? borderDark : '#e5e7eb', padding:16
           }}>
-            <Text style={{ fontFamily:'Vazir-Bold', fontSize:18, color: dark ? '#fff' : '#0f172a', marginBottom:6 }}>
+            <Text style={{ fontFamily:'Vazir-Bold', fontSize:18, color: dark ? '#fff' : '#0f172a', marginBottom:6 ,textAlign:'right'}}>
               برنامه رایگان ۳ روزه
             </Text>
-            <Text style={{ fontFamily:'Vazir-Regular', color: dark ? '#cbd5e1' : '#475569', marginBottom:12 }}>
+            <Text style={{ fontFamily:'Vazir-Regular', color: dark ? '#cbd5e1' : '#475569', marginBottom:12,textAlign:'right' }}>
               برای آشنایی با موجیم، یک برنامه کامل تمرین و تغذیه برای ۳ روز به صورت رایگان دریافت کن
             </Text>
             <TouchableOpacity
@@ -133,10 +149,10 @@ export default function LandingScreen({ navigation }) {
             backgroundColor: dark ? cardDark : '#fff', borderRadius:16, borderWidth:1,
             borderColor: dark ? borderDark : '#e5e7eb', padding:16
           }}>
-            <Text style={{ fontFamily:'Vazir-Bold', fontSize:18, color: dark ? '#fff' : '#0f172a', marginBottom:6 }}>
+            <Text style={{ fontFamily:'Vazir-Bold', fontSize:18, color: dark ? '#fff' : '#0f172a', marginBottom:6,textAlign:'right' }}>
               می‌خوای حرفه‌ای‌تر برنامه بگیری؟
             </Text>
-            <Text style={{ fontFamily:'Vazir-Regular', color: dark ? '#cbd5e1' : '#475569', marginBottom:12 }}>
+            <Text style={{ fontFamily:'Vazir-Regular', color: dark ? '#cbd5e1' : '#475569', marginBottom:12 ,textAlign:'right'}}>
               با دریافت برنامه کامل تمرین، رژیم، مکمل و تحلیل هوشمند، حرفه‌ای پیش برو
             </Text>
             <TouchableOpacity

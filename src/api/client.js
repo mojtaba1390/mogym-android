@@ -1,6 +1,7 @@
 import { getToken } from '../utils/storage';
-//const API_URL = 'https://api.mogym.ir';
-const API_URL = 'https://localhost:7088';
+//const API_URL = 'https://api.mogym.ir'; // در صورت نیاز بعداً از env/app.json بخوان
+const API_URL = 'https://localhost:7088'; // در صورت نیاز بعداً از env/app.json بخوان
+
 export async function apiFetch(path, opts = {}) {
   const token = await getToken();
   const headers = {

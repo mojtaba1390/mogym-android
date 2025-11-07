@@ -43,7 +43,7 @@ export default function DashboardScreen({ navigation }) {
     <View style={{flex:1, backgroundColor:bg}}>
       {/* هدر ساده با دکمه‌ی تم بالا-راست */}
       <View style={{padding:16, paddingTop:24, flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
-        <Text style={{ fontFamily:'Vazir-Bold', fontSize:18, color:text }}>سلام {profile?.fullName || 'کاربر'} 👋</Text>
+        <Text style={{ fontFamily:'Vazir-Bold', fontSize:18, color:text }}>سلام {/*{profile?.fullName || 'کاربر'}*/} 👋</Text>
         <TouchableOpacity
           onPress={() => setDark(v=>!v)}
           style={{ padding:10, borderRadius:9999, backgroundColor: dark ? '#141827' : '#f1f5f9', borderWidth:1, borderColor:border }}
@@ -62,23 +62,23 @@ export default function DashboardScreen({ navigation }) {
 
         {/* کارت برنامه فعال */}
         <View style={{ backgroundColor:card, borderRadius:16, borderWidth:1, borderColor:border, padding:16, marginBottom:12 }}>
-          <Text style={{ fontFamily:'Vazir-Bold', fontSize:16, color:text, marginBottom:6 }}>
+          <Text style={{ fontFamily:'Vazir-Bold', fontSize:16, color:text, marginBottom:6 ,textAlign:'right'}}>
             برنامه فعال
           </Text>
           {activePlan ? (
             <>
               <Text style={{ fontFamily:'Vazir-Regular', color:sub, marginBottom:10 }}>
-                {activePlan.title} — روز {activePlan.day}
+                {activePlan.PlanType} —  {activePlan.Title}
               </Text>
-              <View style={{ flexDirection:'row', gap:12, marginBottom:12 }}>
+              {/* <View style={{ flexDirection:'row', gap:12, marginBottom:12 }}>
                 <Badge icon="barbell" label={`${activePlan.currentWorkoutCount || 0}/${activePlan.totalWorkouts || 0} تمرین`} text={text} sub={sub} border={border} />
                 <Badge icon="time" label="امروز آماده‌ای؟" text={text} sub={sub} border={border} />
-              </View>
+              </View> */}
               <TouchableOpacity
                 onPress={() => navigation.navigate('ActivePlan' /* اسکرین را بعداً اضافه می‌کنیم */)}
                 style={{ backgroundColor:primary, padding:12, borderRadius:12 }}
               >
-                <Text style={{ fontFamily:'Vazir-Medium', color:'#fff', textAlign:'center' }}>رفتن به برنامه امروز</Text>
+                <Text style={{ fontFamily:'Vazir-Medium', color:'#fff', textAlign:'center' }}>رفتن به برنامه </Text>
               </TouchableOpacity>
             </>
           ) : (
