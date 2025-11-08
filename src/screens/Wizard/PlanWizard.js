@@ -31,9 +31,17 @@ export default function PlanWizard({ route, navigation }) {
   // مرحله
   const [step, setStep] = useState(1);
 
+const rRequested = route?.params?.requestedPlan ?? 3;
+const rPlanType  = route?.params?.planType ?? 1;
+const rPrice     = route?.params?.price ?? 0;
+const rFree      = !!route?.params?.free || rPlanType === 0 || rPrice === 0;
+
   // داده‌های فرم
 const [form, setForm] = useState({
-  requestedPlan: 3,
+    requestedPlan: rRequested,      // 1/2/3
+  planType: rPlanType,            // 0=رایگان 1=عادی 2=پرمیوم
+  price: rPrice,                  // نمایش/ارسال
+  isFreeTrial: rFree,             // پرچم رایگان
   gender: '0',
   age: '',
   height: '',
@@ -47,7 +55,6 @@ const [form, setForm] = useState({
   // -------------------
   equipment: '3',
   frequency: 3,
-  isFreeTrial: !!route?.params?.free,
 });
 
 
@@ -93,9 +100,9 @@ case 4: return form.activityLevel !== '' && form.allergies !== '' && form.medica
       }
 
 const payload = {
-  RequestedPlan: form.requestedPlan,
-    PlanType: 0,
-    Price:0,
+  RequestedPlan: Number(form.requestedPlan),
+    PlanType: Number(form.planType),
+    Price:Number(form.price) || 0,
       Age: parseInt((form.age || '').replace(/\D/g,''), 10) || 0,
         Height: parseInt((form.height || '').replace(/\D/g,''), 10) || 0,
   Weight: parseInt((form.weight || '').replace(/\D/g,''), 10) || 0,
@@ -122,8 +129,23 @@ const payload = {
 
       const data = await res.json();
 if(res.status===200){
+if (form.isFreeTrial || Number(form.planType) === 0 || Number(form.price) === 0) {
+  // رایگان → برو داشبورد
       Alert.alert('موفق', 'درخواست برنامه ثبت شد.');
       navigation.navigate('Dashboard');    
+} else {
+  const planId = data?.PlanId;
+const finalPrice = data?.Price ?? 0;
+const planTitle = data?.Title ?? 'برنامه جدید';
+if (planId) {
+  await AsyncStorage.multiSet([
+    ['planId', String(planId)],
+    ['price', Number(finalPrice)],
+    ['planTitle', String(planTitle)],
+  ]);
+}
+  navigation.navigate('Payment', { planId,finalPrice,planTitle });
+}   
 }
 else
             Alert.alert('نا موفق',data?.Message);

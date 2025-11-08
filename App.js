@@ -14,7 +14,7 @@ import DashboardScreen from './src/screens/Home/DashboardScreen';        // اگ
 import ProfileScreen from './src/screens/Profile/ProfileScreen';          // اگر فعلاً نداری، می‌تونی موقتاً DashboardScreen را بگذاری
 import LoginScreen from './src/screens/Auth/LoginScreen';
 import PlanWizard from './src/screens/Wizard/PlanWizard';
-// import PaymentScreen from './src/screens/Payment/PaymentScreen';          // اگر هنوز نساختی، موقتاً یک صفحه‌ی ساده بساز
+import PaymentScreen from './src/screens/Payment/PaymentScreen';          // اگر هنوز نساختی، موقتاً یک صفحه‌ی ساده بساز
 import TermsScreen from './src/screens/Static/TermsScreen';
 import FaqScreen from './src/screens/Static/FaqScreen';
 import ContactUsScreen from './src/screens/Static/ContactUsScreen';
@@ -103,6 +103,8 @@ export default function App() {
         <Stack.Screen name="Terms" component={TermsScreen} />
         <Stack.Screen name="Faq" component={FaqScreen} />
         <Stack.Screen name="ContactUs" component={ContactUsScreen} />
+        <Stack.Screen name="Payment" component={PaymentScreen} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
