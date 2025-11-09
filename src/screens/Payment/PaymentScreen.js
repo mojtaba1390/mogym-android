@@ -4,8 +4,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 //const API_URL = 'https://api.mogym.ir'; // در صورت نیاز از env بگیر
-const API_URL = 'https://localhost:7088'; // در صورت نیاز بعداً از env/app.json بخوان
-
+//const API_URL = 'https://localhost:7088'; // در صورت نیاز بعداً از env/app.json بخوان
+const API_URL = 'http://185.252.86.164:8083';
 const palette = {
   bgDark: '#0e1015',
   cardDark: '#1a1d2e',
@@ -55,7 +55,6 @@ export default function PaymentScreen({ route, navigation }) {
       setCheckingCode(true);
       const token = await AsyncStorage.getItem('token');
 
-      // مسیر نمونه — با بکند هماهنگ کن
       const res = await fetch(`${API_URL}/api/payment/calculate-discount`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
@@ -63,19 +62,27 @@ export default function PaymentScreen({ route, navigation }) {
       });
 
       const data = await res.json();
+    const r = data?.Result;
+
       if (!res.ok || !data?.Result) {
         setDiscountInfo(null);
         setFinalPrice(basePrice);
         return Alert.alert('کد نامعتبر', data?.Message || 'کد تخفیف معتبر نیست.');
       }
 
-      // انتظار: Result = { Type:'percent'|'amount', Value:number }
-      const type = (data.Result.Type || '').toLowerCase();
-      const value = Number(data.Result.Value || 0);
-      setDiscountInfo({ type, value });
-      Alert.alert('اعمال شد', 'تخفیف با موفقیت اعمال شد.');
+    const original = Number(r.OriginalAmount ?? basePrice) || 0;
+    const discount = Number(r.DiscountAmount ?? 0) || 0;
+    const final    = Number(r.FinalAmount ?? Math.max(0, original - discount)) || 0;
+
+    setBasePrice(original);
+    setDiscountInfo({ original, discount, final });
+    setFinalPrice(final);
+
+    Alert.alert('اعمال شد', 'تخفیف با موفقیت اعمال شد.');
     } catch (e) {
-      Alert.alert('خطا', 'عدم امکان بررسی کد تخفیف.');
+    setDiscountInfo(null);
+    setFinalPrice(basePrice);
+    Alert.alert('خطا', 'عدم امکان بررسی کد تخفیف.');
     } finally {
       setCheckingCode(false);
     }
@@ -91,28 +98,24 @@ export default function PaymentScreen({ route, navigation }) {
         return navigation.navigate('Login');
       }
 
-      // بهتره مبلغ نهایی سمت سرور محاسبه و اعتبارسنجی بشه
       const payload = {
         PlanId: planId,
         DiscountCode: discountInfo ? discountCode.trim() : null,
-        Amount: Number(finalPrice) || 0,
-        ReturnUrl: 'mogym://payment-result', // اگر deep link داری؛ در غیر این صورت یک صفحهٔ نتیجه داخل اپ بساز
+        Amount: Number(finalPrice) || 0
       };
 
-      // مسیر نمونه — با بک‌اند هماهنگ کن
       const res = await fetch(`${API_URL}/api/payment/start`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(payload),
       });
 
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data?.Result?.PaymentUrl) {
+      const data = await res.json();
+      if (!res.ok || !data?.redirectUrl) {
         throw new Error(data?.Message || 'ایجاد تراکنش ناموفق بود.');
       }
 
-      const paymentUrl = data.Result.PaymentUrl;
-      // می‌تونی به WebView Screen هم ببری؛ ساده‌ترین راه:
+      const paymentUrl = data.redirectUrl;
       const supported = await Linking.canOpenURL(paymentUrl);
       if (supported) {
         await Linking.openURL(paymentUrl);
@@ -160,31 +163,36 @@ export default function PaymentScreen({ route, navigation }) {
         </View>
 
         {/* قیمت‌ها */}
-        <View style={{
-          backgroundColor: colors.card, borderWidth: 1, borderColor: colors.border,
-          borderRadius: 16, padding: 16, marginBottom: 12
-        }}>
-          <Row>
-            <Text style={{ fontFamily: 'Vazir-Regular', color: colors.sub }}>قیمت پایه</Text>
-            <Text style={{ fontFamily: 'Vazir-Medium', color: colors.text }}>{toman(basePrice)}</Text>
-          </Row>
+<View style={{
+  backgroundColor: colors.card, borderWidth: 1, borderColor: colors.border,
+  borderRadius: 16, padding: 16, marginBottom: 12
+}}>
+  <Row>
+    <Text style={{ fontFamily: 'Vazir-Regular', color: colors.sub }}>قیمت پایه</Text>
+    <Text style={{ fontFamily: 'Vazir-Medium', color: colors.text }}>
+      {toman(discountInfo ? discountInfo.original : basePrice)}
+    </Text>
+  </Row>
 
-          {discountInfo ? (
-            <Row>
-              <Text style={{ fontFamily: 'Vazir-Regular', color: palette.ok }}>تخفیف اعمال‌شده</Text>
-              <Text style={{ fontFamily: 'Vazir-Medium', color: palette.ok }}>
-                {discountInfo.type === 'percent' ? `%${discountInfo.value}` : toman(discountInfo.value)}
-              </Text>
-            </Row>
-          ) : null}
+  {discountInfo ? (
+    <Row>
+      <Text style={{ fontFamily: 'Vazir-Regular', color: palette.ok }}>تخفیف</Text>
+      <Text style={{ fontFamily: 'Vazir-Medium', color: palette.ok }}>
+        {toman(discountInfo.discount)}
+      </Text>
+    </Row>
+  ) : null}
 
-          <View style={{ height: 1, backgroundColor: colors.border, marginVertical: 8 }} />
+  <View style={{ height: 1, backgroundColor: colors.border, marginVertical: 8 }} />
 
-          <Row>
-            <Text style={{ fontFamily: 'Vazir-Bold', color: colors.text }}>مبلغ نهایی</Text>
-            <Text style={{ fontFamily: 'Vazir-Bold', color: colors.text }}>{toman(finalPrice)}</Text>
-          </Row>
-        </View>
+  <Row>
+    <Text style={{ fontFamily: 'Vazir-Bold', color: colors.text }}>مبلغ نهایی</Text>
+    <Text style={{ fontFamily: 'Vazir-Bold', color: colors.text }}>
+      {toman(discountInfo ? discountInfo.final : finalPrice)}
+    </Text>
+  </Row>
+</View>
+
 
         {/* کد تخفیف */}
         <View style={{
