@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 //const API_URL = 'https://api.mogym.ir'; // در صورت نیاز از env بگیر
-//const API_URL = 'https://localhost:7088'; // در صورت نیاز بعداً از env/app.json بخوان
+//const API_URL = 'http://185.252.86.164:8083'; // در صورت نیاز بعداً از env/app.json بخوان
 const API_URL = 'http://185.252.86.164:8083';
 const palette = {
   bgDark: '#0e1015',
@@ -205,7 +205,7 @@ export default function PaymentScreen({ route, navigation }) {
           <TextInput
             value={discountCode}
             onChangeText={setDiscountCode}
-            placeholder="کد را وارد کنید (مثلاً mogym)"
+            placeholder="کد را وارد کنید "
             placeholderTextColor={colors.sub}
             style={{
               borderWidth: 1, borderColor: colors.border, borderRadius: 12,

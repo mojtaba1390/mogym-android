@@ -18,6 +18,8 @@ import PaymentScreen from './src/screens/Payment/PaymentScreen';          // ا�
 import TermsScreen from './src/screens/Static/TermsScreen';
 import FaqScreen from './src/screens/Static/FaqScreen';
 import ContactUsScreen from './src/screens/Static/ContactUsScreen';
+import PaymentResultScreen from './src/screens/Payment/PaymentResultScreen';
+
 // import ActivePlanScreen from './src/screens/ActivePlan/ActivePlanScreen'; // در صورت نیاز
 
 const Stack = createNativeStackNavigator();
@@ -104,6 +106,7 @@ export default function App() {
         <Stack.Screen name="Faq" component={FaqScreen} />
         <Stack.Screen name="ContactUs" component={ContactUsScreen} />
         <Stack.Screen name="Payment" component={PaymentScreen} />
+<Stack.Screen name="PaymentResult" component={PaymentResultScreen} />
 
       </Stack.Navigator>
     </NavigationContainer>

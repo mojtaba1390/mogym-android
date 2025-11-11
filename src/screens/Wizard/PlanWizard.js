@@ -8,7 +8,7 @@ import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Picker } from '@react-native-picker/picker';
 
 //const API_URL = 'https://api.mogym.ir'; // در صورت نیاز بعداً از env/app.json بخوان
-const API_URL = 'https://localhost:7088'; // در صورت نیاز بعداً از env/app.json بخوان
+const API_URL = 'http://185.252.86.164:8083'; // در صورت نیاز بعداً از env/app.json بخوان
 
 const palette = {
   bgDark: '#0e1015',
@@ -137,13 +137,6 @@ if (form.isFreeTrial || Number(form.planType) === 0 || Number(form.price) === 0)
   const planId = data?.PlanId;
 const finalPrice = data?.Price ?? 0;
 const planTitle = data?.Title ?? 'برنامه جدید';
-if (planId) {
-  await AsyncStorage.multiSet([
-    ['planId', String(planId)],
-    ['price', Number(finalPrice)],
-    ['planTitle', String(planTitle)],
-  ]);
-}
   navigation.navigate('Payment', { planId,finalPrice,planTitle });
 }   
 }
