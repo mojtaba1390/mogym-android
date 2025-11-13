@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, RefreshControl, ScrollView, TouchableOpacity,Alert } from 'react-native';
 import { apiFetch } from '../../api/client';
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function DashboardScreen({ navigation }) {
   const [dark, setDark] = useState(true);
@@ -19,22 +20,53 @@ export default function DashboardScreen({ navigation }) {
   const primary = '#2563eb';
   const accent = '#10b981';
 
-  const load = async () => {
-    try {
-      setErr('');
-      setLoading(true);
-      // مسیرهای API را با واقعی‌های خودت جایگزین کن
-      //const p = await apiFetch('/api/profile/me');                // {Result:{fullName:...}}
-      const a = await apiFetch('/api/plan/active');       // {Result:{title,day,currentWorkoutCount,totalWorkouts}}
-      //setProfile(p?.Result || {});
-      setActivePlan(a?.Result || null);
-    } catch (e) {
-      setErr('خطا در دریافت اطلاعات داشبورد');
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
+const goToActivePlan = async () => {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    if (!token) {
+      return navigation.navigate('Login');
     }
-  };
+    const planId = await AsyncStorage.getItem('planId');
+    if (!planId) {
+      Alert.alert('نیاز به برنامه', 'ابتدا یک برنامه بسازید.');
+      return navigation.navigate('Plans');
+    }
+    navigation.navigate('ActivePlan', { planId: planId});
+  } catch {
+    navigation.navigate('Login');
+  }
+};
+
+const load = async () => {
+  try {
+    setErr('');
+    setLoading(true);
+
+    // دریافت برنامه فعال از سرور
+    const a = await apiFetch('/api/plan/active'); // { Result:{ PlanId, Title, Day, ... } }
+    const result = a?.Result || null;
+
+    if (result) {
+      setActivePlan(result);
+
+      await AsyncStorage.removeItem('planId');
+      if (result.PlanId) {
+        await AsyncStorage.setItem('planId', String(result.PlanId));
+      }
+    } else {
+      // اگر هیچ برنامه فعالی نیست، planId پاک بماند
+      await AsyncStorage.removeItem('planId');
+      setActivePlan(null);
+    }
+  } catch (e) {
+    console.error(e);
+    setErr('خطا در دریافت اطلاعات داشبورد');
+  } finally {
+    setLoading(false);
+    setRefreshing(false);
+  }
+};
+
 
   useEffect(() => { load(); }, []);
   const onRefresh = useCallback(() => { setRefreshing(true); load(); }, []);
@@ -75,7 +107,7 @@ export default function DashboardScreen({ navigation }) {
                 <Badge icon="time" label="امروز آماده‌ای؟" text={text} sub={sub} border={border} />
               </View> */}
               <TouchableOpacity
-                onPress={() => navigation.navigate('ActivePlan' /* اسکرین را بعداً اضافه می‌کنیم */)}
+                onPress={goToActivePlan}
                 style={{ backgroundColor:primary, padding:12, borderRadius:12 }}
               >
                 <Text style={{ fontFamily:'Vazir-Medium', color:'#fff', textAlign:'center' }}>رفتن به برنامه </Text>
