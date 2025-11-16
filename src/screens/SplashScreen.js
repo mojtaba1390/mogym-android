@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, Image, Animated, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { logEvent } from '../api/telemetry'; // مسیر درستش رو بذار
 export default function SplashScreen({ navigation }) {
 
   const fade = useRef(new Animated.Value(0)).current;
@@ -25,13 +25,14 @@ export default function SplashScreen({ navigation }) {
 
     // بعد از ۲ ثانیه برو صفحه اصلی یا لاگین
     setTimeout(async () => {
+            logEvent('AppOpened');
       const token = await AsyncStorage.getItem('token');
       if (token) {
         navigation.replace('Main');   // داشبورد / ناوبری اصلی
       } else {
         navigation.replace('Login');
       }
-    }, 2000);
+    }, 3000);
 
   }, []);
 

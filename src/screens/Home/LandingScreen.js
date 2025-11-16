@@ -10,6 +10,11 @@ const blue = '#2563eb';
 const bgDark = '#0e1015';
 const cardDark = '#1a1d2e';
 const borderDark = '#273043';
+const clearToken = async () => {
+  await AsyncStorage.removeItem('token');
+  alert('Token removed');
+};
+
 
 export default function LandingScreen({ navigation }) {
   const [dark, setDark] = useState(true);
@@ -69,6 +74,10 @@ const handleAuthPress = async () => {
         </Text>
       </View>
 
+
+<TouchableOpacity onPress={clearToken}>
+  <Text style={{ color: 'red' }}>پاک کردن توکن</Text>
+</TouchableOpacity>
       <ScrollView contentContainerStyle={{ paddingBottom:24 }}>
         {/* هدر */}
         <View style={{ flexDirection:'row', alignItems:'center', justifyContent:'space-between',
