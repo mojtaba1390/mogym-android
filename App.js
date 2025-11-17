@@ -17,6 +17,7 @@ import PlansScreen from './src/screens/Plans/PlansScreen';
 import ProfileScreen from './src/screens/Profile/ProfileScreen';
 import SplashScreen from './src/screens/SplashScreen';
 import PlanWizardScreen from './src/screens/Wizard/PlanWizard';
+import ContactUsScreen from './src/screens/Static/ContactUsScreen';
 
 const Stack = createNativeStackNavigator();
 const Tabs = createBottomTabNavigator();
@@ -80,7 +81,7 @@ export default function App() {
       >
         {/* اسپلش */}
         <Stack.Screen name="Splash" component={SplashScreen} />
-
+<Stack.Screen name="Plans" component={PlansScreen} />
         {/* لندینگ (صفحه اول بعد از اسپلش) */}
         <Stack.Screen name="Landing" component={LandingScreen} />
 
@@ -97,7 +98,7 @@ export default function App() {
         {/* برنامه فعال – اگر مستقیم لازم شد */}
         <Stack.Screen name="ActivePlan" component={ActivePlanScreen} />
 <Stack.Screen name="Dashboard" component={DashboardScreen} />
-
+<Stack.Screen name="ContactUs" component={ContactUsScreen} />
         {/* تب‌های اصلی اپ (خانه/برنامه‌ها/پروفایل) */}
         <Stack.Screen name="Main" component={MainTabs} />
       </Stack.Navigator>

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Image, Alert } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState } from 'react';
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import FeatureCarousel from '../../components/FeatureCarousel';
 
 const primary = '#7c3aed'; // بنفش (برای دکمه‌ها)
@@ -80,7 +80,7 @@ const handleAuthPress = async () => {
 </TouchableOpacity>
       <ScrollView contentContainerStyle={{ paddingBottom:24 }}>
         {/* هدر */}
-        <View style={{ flexDirection:'row', alignItems:'center', justifyContent:'space-between',
+        <View style={{ flexDirection:'row-reverse', alignItems:'center', justifyContent:'space-between',
           paddingHorizontal:16, paddingVertical:12, backgroundColor: dark ? cardDark : '#fff',
           borderBottomWidth:1, borderColor: dark ? borderDark : '#e5e7eb', marginTop:8
         }}>
@@ -90,7 +90,7 @@ const handleAuthPress = async () => {
           </View>
 <TouchableOpacity
   onPress={handleAuthPress}
-  style={{ backgroundColor: primary, paddingHorizontal:16, paddingVertical:8, borderRadius:12 }}
+  style={{ backgroundColor: primary, paddingHorizontal:16, paddingVertical:8, borderRadius:12,flexDirection: 'row-reverse' }}
 >
   <Text style={{ color:'#fff', fontFamily:'Vazir-Medium' }}>ورود / ثبت‌نام</Text>
 </TouchableOpacity>
@@ -136,7 +136,7 @@ const handleAuthPress = async () => {
             backgroundColor: dark ? cardDark : '#fff', borderRadius:16, borderWidth:1,
             borderColor: dark ? borderDark : '#e5e7eb', padding:16
           }}>
-            <Text style={{ fontFamily:'Vazir-Bold', fontSize:18, color: dark ? '#fff' : '#0f172a', marginBottom:6 ,textAlign:'right'}}>
+            <Text style={{ fontFamily:'Vazir-Bold', fontSize:18, color: dark ? '#fff' : '#0f172a', marginBottom:20 ,textAlign:'center'}}>
               برنامه رایگان ۳ روزه
             </Text>
             <Text style={{ fontFamily:'Vazir-Regular', color: dark ? '#cbd5e1' : '#475569', marginBottom:12,textAlign:'right' }}>
@@ -158,7 +158,7 @@ const handleAuthPress = async () => {
             backgroundColor: dark ? cardDark : '#fff', borderRadius:16, borderWidth:1,
             borderColor: dark ? borderDark : '#e5e7eb', padding:16
           }}>
-            <Text style={{ fontFamily:'Vazir-Bold', fontSize:18, color: dark ? '#fff' : '#0f172a', marginBottom:6,textAlign:'right' }}>
+            <Text style={{ fontFamily:'Vazir-Bold', fontSize:18, color: dark ? '#fff' : '#0f172a', marginBottom:20,textAlign:'center' }}>
               می‌خوای حرفه‌ای‌تر برنامه بگیری؟
             </Text>
             <Text style={{ fontFamily:'Vazir-Regular', color: dark ? '#cbd5e1' : '#475569', marginBottom:12 ,textAlign:'right'}}>

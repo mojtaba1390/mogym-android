@@ -76,9 +76,10 @@ const validateOtp = (value) => {
       });
       if (res.status === 200) {
         setOtpSent(true);
-        setCountdown(120); // 2 min
+        setCount(120); // 2 min
       } else {
-        setError(res.Message);
+           const data = await res.json();
+        setError(data.Message || 'خطا در ارسال کد');
       }
     } catch { setError('ارسال کد ناموفق بود'); }
     finally { setLoading(false); }
@@ -98,13 +99,15 @@ if (res.status === 200 && data.Jwt)
   {
   const token = data.Jwt;
 await AsyncStorage.setItem('token', token);  
-navigation.navigate('Main');
+navigation.navigate('Dashboard');
 }
 else{
-        setError(data.Message);
+        setError(data.Message || 'کد تأیید نادرست است');
 }
   }
-catch { setError('کد وارد شده صحیح نیست'); }
+catch { 
+      setError('خطا در ارتباط با سرور');
+ }
     finally { setLoading(false); }
   };
   // رنگ‌ها
@@ -171,7 +174,7 @@ catch { setError('کد وارد شده صحیح نیست'); }
     borderColor: border,
     borderRadius: 12,
     padding: 12,
-    marginBottom: 4,
+    marginBottom: 10
   }}
 />
 {otpError ? (
@@ -180,7 +183,7 @@ catch { setError('کد وارد شده صحیح نیست'); }
   </Text>
 ) : null}
 {phoneError ? (
-  <Text style={{ fontFamily: 'Vazir-Regular', color: '#ef4444', marginBottom: 6,textAlign:'right' }}>
+  <Text style={{ fontFamily: 'Vazir-Regular', color: '#ef4444', marginBottom: 15,textAlign:'right' }}>
     {phoneError}
   </Text>
 ) : null}

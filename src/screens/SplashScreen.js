@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import { View, Text, Image, Animated, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { logEvent } from '../api/telemetry'; // مسیر درستش رو بذار
+import { registerPushToken } from '../services/pushService';
+
 export default function SplashScreen({ navigation }) {
 
   const fade = useRef(new Animated.Value(0)).current;
@@ -28,9 +30,10 @@ export default function SplashScreen({ navigation }) {
             logEvent('AppOpened');
       const token = await AsyncStorage.getItem('token');
       if (token) {
+              registerPushToken(); // ثبت یا آپدیت توکن پوش
         navigation.replace('Main');   // داشبورد / ناوبری اصلی
       } else {
-        navigation.replace('Login');
+        navigation.replace('Landing');
       }
     }, 3000);
 
@@ -60,7 +63,9 @@ const styles = StyleSheet.create({
     width: 140,
     height: 140,
     resizeMode: 'contain',
-    marginBottom: 20
+    marginBottom: 20,
+    marginLeft:60,
+    alignItems:'center'
   },
   text: {
     fontSize: 20,
