@@ -4,7 +4,7 @@ import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 
-const API_URL = 'https://api.mogym.ir'; // مثل بقیه جاها
+const API_URL = 'http://185.252.86.164:8083'; // مثل بقیه جاها
 
 // تنظیم رفتار نوتی روی فورگراند (فقط یک‌بار در اپ)
 Notifications.setNotificationHandler({

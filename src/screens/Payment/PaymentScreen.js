@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView, Linking, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState } from 'react';
+import { ActivityIndicator, Alert, Linking, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 //const API_URL = 'https://api.mogym.ir'; // در صورت نیاز از env بگیر
@@ -101,6 +101,7 @@ export default function PaymentScreen({ route, navigation }) {
       const payload = {
         PlanId: planId,
         DiscountCode: discountInfo ? discountCode.trim() : null,
+        ClientType: 'android',
         Amount: Number(finalPrice) || 0
       };
 

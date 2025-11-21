@@ -1,11 +1,15 @@
 // src/screens/Wizard/PlanWizard.js
-import React, { useMemo, useState } from 'react';
-import {
-  View, Text, ScrollView, TextInput, TouchableOpacity, Alert,
-} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Picker } from '@react-native-picker/picker';
+import { useMemo, useState } from 'react';
+import {
+  Alert,
+  ScrollView,
+  Text,
+  TextInput, TouchableOpacity,
+  View,
+} from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 //const API_URL = 'https://api.mogym.ir'; // در صورت نیاز بعداً از env/app.json بخوان
 const API_URL = 'http://185.252.86.164:8083'; // در صورت نیاز بعداً از env/app.json بخوان
@@ -285,24 +289,27 @@ else
             </Row>
 
 <Label>سن</Label>
-<Input
-  keyboardType="numeric"
-  value={form.age}
-  onChangeText={v => setF('age', v)}
-  placeholder="سال"
-/>
+    <Input
+      keyboardType="number-pad"
+      blurOnSubmit={false}
+      value={form.age}
+      onChangeText={v => setF('age', v)}
+      placeholder="سال"
+    />
 
 <Label>قد (cm)</Label>
 <Input
-  keyboardType="numeric"
-  value={form.height}
+      keyboardType="number-pad"
+      blurOnSubmit={false}
+        value={form.height}
   onChangeText={v => setF('height', v)}
   placeholder="قد"
 />
 
 <Label>وزن (kg)</Label>
 <Input
-  keyboardType="numeric"
+        keyboardType="number-pad"
+      blurOnSubmit={false}
   value={form.weight}
   onChangeText={v => setF('weight', v)}
   placeholder="وزن"

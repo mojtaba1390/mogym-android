@@ -9,7 +9,7 @@ import { useFonts } from 'expo-font';
 // اسکرین‌ها – مسیرها رو با پروژه‌ی خودت تنظیم کن
 import ActivePlanScreen from './src/screens/ActivePlan/ActivePlanScreen';
 import LoginScreen from './src/screens/Auth/LoginScreen';
-import DashboardScreen from './src/screens/Home/DashboardScreen'; // اگر صفحهٔ داشبورد جدا داری
+import DashboardScreen from './src/screens/Home/DashboardScreen'; 
 import LandingScreen from './src/screens/Home/LandingScreen';
 import PaymentResultScreen from './src/screens/Payment/PaymentResultScreen';
 import PaymentScreen from './src/screens/Payment/PaymentScreen';
@@ -18,11 +18,23 @@ import ProfileScreen from './src/screens/Profile/ProfileScreen';
 import SplashScreen from './src/screens/SplashScreen';
 import PlanWizardScreen from './src/screens/Wizard/PlanWizard';
 import ContactUsScreen from './src/screens/Static/ContactUsScreen';
+import * as Linking from 'expo-linking';
 
 const Stack = createNativeStackNavigator();
 const Tabs = createBottomTabNavigator();
+const linking = {
+  prefixes: ['mogym://', Linking.createURL('/')],
+  config: {
+    screens: {
+      Splash: 'splash',
+      Landing: '',
+      Login: 'login',
+      Main: 'main',
+      PaymentResult: 'payment-result',
+    },
+  },
+};
 
-// 🔹 تب‌های پایین – بدون Dashboard اضافه
 function MainTabs() {
   return (
     <Tabs.Navigator
@@ -33,7 +45,7 @@ function MainTabs() {
     >
       <Tabs.Screen
         name="HomeTab"
-        component={LandingScreen} // یا Dashboard اصلی‌ت اگر جدا داری
+        component={LandingScreen} 
         options={{
           title: 'خانه',
           tabBarIcon: ({ color, size }) => (

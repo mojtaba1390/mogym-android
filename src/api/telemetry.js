@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 
-const API_URL = 'https://api.mogym.ir'; // اگر از env می‌گیری، همون رو استفاده کن
+const API_URL = 'http://185.252.86.164:8083'; // اگر از env می‌گیری، همون رو استفاده کن
 
 const getClientMeta = () => {
   const appVersion = Constants.expoConfig?.version || 'dev';

@@ -1,11 +1,9 @@
 // src/screens/Auth/LoginScreen.js
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons'; // اگر نصب نیست: npx expo install @expo/vector-icons
-import { Animated, Easing } from 'react-native';
-import { StackActions } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ActivityIndicator, Animated, Easing, Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 //const API_URL = 'https://api.mogym.ir'; // در صورت نیاز بعداً از env/app.json بخوان
 const API_URL = 'http://185.252.86.164:8083'; // در صورت نیاز بعداً از env/app.json بخوان

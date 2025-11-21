@@ -9,7 +9,8 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "ir.mogym.app"
     },
     "android": {
       "adaptiveIcon": {
@@ -19,7 +20,8 @@
         "monochromeImage": "./assets/images/logo.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "ir.mogym.app"
     },
     "web": {
       "bundler": "metro",
@@ -27,9 +29,14 @@
       "favicon": "./assets/images/favicon.png"
     },
     "splash": {
-    "image": "./assets/logo.png",
-    "resizeMode": "contain",
-    "backgroundColor": "#0e1015"
-  }
+      "image": "./assets/logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0e1015"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "c315bffe-bda3-40b5-9734-75ca4d11a504"
+      }
+    }
   }
 }
